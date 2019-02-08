@@ -42,15 +42,16 @@ var user = function (connection) {
     };
 
 
-    this.doDelete = function (oUser) {
-        const statement = createPreparedDeleteStatement(USER_TABLE, oUser);
+    this.doDelete = function (usid) {
+        const statement = createPreparedDeleteStatement(USER_TABLE, {
+            usid: usid
+        });
         connection.executeUpdate(statement.sql, statement.aValues);
 
         connection.commit();
         $.response.status = $.net.http.OK;
         $.response.setBody(JSON.stringify({}));
     };
-
 
     function getNextval() {
         const statement = `select "HiMTA::usid".NEXTVAL as "ID" from "HiMTA::User"`;
@@ -64,13 +65,14 @@ var user = function (connection) {
     }
 
     function createPreparedInsertStatement(sTableName, oValueObject) {
-       let oResult = {
+        let oResult = {
             aParams: [],
             aValues: [],
             sql: "",
         };
 
-        let sColumnList = '', sValueList = '';
+        let sColumnList = '',
+            sValueList = '';
 
         Object.keys(oValueObject).forEach(value => {
             sColumnList += `"${value}",`;
@@ -103,7 +105,8 @@ var user = function (connection) {
             sql: "",
         };
 
-        let sColumnList = '', sValueList = '';
+        let sColumnList = '',
+            sValueList = '';
 
         Object.keys(oValueObject).forEach(value => {
             sColumnList += `"${value}",`;
@@ -136,9 +139,23 @@ var user = function (connection) {
             sql: "",
         };
 
-        oResult.sql = `DELETE FROM "${sTableName}" WHERE "usid" = '${oConditionObject.usid}'`;
+        let sWhereClause = '';
+        for (let key in oConditionObject) {
+            sWhereClause += `"${key}"=? and `;
+            oResult.aValues.push(oConditionObject[key]);
+            oResult.aParams.push(key);
+        }
+        // Remove the last unnecessary AND
+        sWhereClause = sWhereClause.slice(0, -5);
+        if (sWhereClause.length > 0) {
+            sWhereClause = " where " + sWhereClause;
+        }
+
+        oResult.sql = `delete from "${sTableName}" ${sWhereClause}`;
 
         $.trace.error("sql to delete: " + oResult.sql);
         return oResult;
     };
+
+
 };
