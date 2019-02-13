@@ -1,11 +1,14 @@
 var user = function (connection) {
 
     const USER_TABLE = "HiMTA::User";
+    const USER_ID = "HiMTA::usid"
+
     /*
             const USER = $.session.securityContext.userInfo.familyName ?
                 $.session.securityContext.userInfo.familyName + " " + $.session.securityContext.userInfo.givenName :
                 $.session.getUsername().toLocaleLowerCase(),
     */
+      
     this.doGet = function () {
         const result = connection.executeQuery('SELECT * FROM "HiMTA::User"');
 
@@ -43,9 +46,7 @@ var user = function (connection) {
 
 
     this.doDelete = function (usid) {
-        const statement = createPreparedDeleteStatement(USER_TABLE, {
-            usid: usid
-        });
+        const statement = createPreparedDeleteStatement(USER_TABLE, {usid: usid});
         connection.executeUpdate(statement.sql, statement.aValues);
 
         connection.commit();
@@ -65,24 +66,17 @@ var user = function (connection) {
     }
 
     function createPreparedInsertStatement(sTableName, oValueObject) {
-        let oResult = {
-            aParams: [],
-            aValues: [],
-            sql: "",
-        };
+        let oResult = new Result();
 
         let sColumnList = '',
             sValueList = '';
 
-        Object.keys(oValueObject).forEach(value => {
-            sColumnList += `"${value}",`;
-            oResult.aParams.push(value);
-        });
-
-        Object.values(oValueObject).forEach(value => {
+        for(let key in oValueObject){
+            sColumnList += `"${key}",`;
+            oResult.aParams.push(key);
             sValueList += "?, ";
-            oResult.aValues.push(value);
-        });
+            oResult.aValues.push(oValueObject[key]);            
+        }
 
         $.trace.error("svalue " + sValueList);
         $.trace.error("scolumn: " + sColumnList);
@@ -99,24 +93,17 @@ var user = function (connection) {
 
 
     function createPreparedUpdateStatement(sTableName, oValueObject) {
-        let oResult = {
-            aParams: [],
-            aValues: [],
-            sql: "",
-        };
+        let oResult = new Result();
 
         let sColumnList = '',
             sValueList = '';
 
-        Object.keys(oValueObject).forEach(value => {
-            sColumnList += `"${value}",`;
-            oResult.aParams.push(value);
-        });
-
-        Object.values(oValueObject).forEach(value => {
+        for(let key in oValueObject){
+            sColumnList += `"${key}",`;
+            oResult.aParams.push(key);
             sValueList += "?, ";
-            oResult.aValues.push(value);
-        });
+            oResult.aValues.push(oValueObject[key]);            
+        }
 
         $.trace.error("svalue " + sValueList);
         $.trace.error("scolumn: " + sColumnList);
@@ -133,11 +120,7 @@ var user = function (connection) {
 
 
     function createPreparedDeleteStatement(sTableName, oConditionObject) {
-        let oResult = {
-            aParams: [],
-            aValues: [],
-            sql: "",
-        };
+        let oResult = new Result();
 
         let sWhereClause = '';
         for (let key in oConditionObject) {
@@ -157,5 +140,10 @@ var user = function (connection) {
         return oResult;
     };
 
+    function Result() {
+        this.aParams = [];
+        this.aValues = [];
+        this.sql = "";
+    };
 
 };
