@@ -1,0 +1,9 @@
+namespace HiMTA; 
+ 
+entity Microwaves {
+		    @Comment: 'Id of Microwave'
+		    key microid : String(4);
+		    @Comment: 'BrandName'
+		    brand : String(100);
+
+		};

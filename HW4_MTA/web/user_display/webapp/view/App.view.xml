@@ -2,6 +2,13 @@
 	<Shell>
 		<App id="home">
 			<Page title="{i18n>homePageTitle}">
+            <Panel class="sapUiResponsiveMargin" width="auto">
+					<content>
+						<Label text="Name" class="sapUiSmallMargin" />
+      					<Input id="input_name" width="200px" />	
+						<Button text="Create" press=".createUser"/>		
+					</content>
+				</Panel>
 				<Panel class="sapUiResponsiveMargin" width="auto">
 					<content>
 						 <Table id="peopleTable" 
