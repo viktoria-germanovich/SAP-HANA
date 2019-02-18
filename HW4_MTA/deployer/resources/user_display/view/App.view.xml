@@ -2,31 +2,17 @@
 	<Shell>
 		<App id="home">
 			<Page title="{i18n>homePageTitle}">
+            <Panel class="sapUiResponsiveMargin" width="auto">
+					<content>
+						<Label text="ID" class="sapUiSmallMargin" />
+      					<Input id="input_id" width="200px" />	
+			          <Label text="Name" class="sapUiSmallMargin" />
+      					<Input id="input_name" width="200px" />	
+						<Button text="Create" press=".createUser"/>		
+					</content>
+				</Panel>
 				<Panel class="sapUiResponsiveMargin" width="auto">
 					<content>
-						<!-- <Table id="usersTable" items="{
-										path: 'users>/Users'
-									}">
-							<columns>
-								<Column id="idColumn">
-									<Text text="{ID}" />
-									</Column>
-								<Column id="nameColumn">
-									<Text text="{Name}" />
-								</Column>												
-							</columns>
-							<items>
-								<ColumnListItem
-									id="row">
-									<cells>
-										<Label text="{users>usid}" />
-									</cells>
-									<cells>
-										<Label text="{users>name}" />
-									</cells>																
-								</ColumnListItem>
-							</items>
-						</Table> -->
 						 <Table id="peopleTable" 
                             growing="true" 
                             growingThreshold="10" 
@@ -40,6 +26,15 @@
                                     <Column id="nameColumn">
                                         <Text text="{i18n>nameLabelText}" />
                                     </Column>
+                                    <Column id="dateOfCreateColumn">
+                                        <Text text="{i18n>dateOfCreateLabelText}" />
+                                    </Column>
+                                    <Column id="dateOfUpdateColumn">
+                                        <Text text="{i18n>dateOfUpdateLabelText}" />
+                                    </Column>
+                                    <Column id="updateUserColumn">
+                                        <Text text="{i18n>userUpdateLabelText}" />
+                                    </Column>
                                </columns>
                                 <items>
                                     <ColumnListItem>
@@ -48,6 +43,15 @@
                                         </cells>
                                         <cells>
                                             <Text text="{users>name}" />
+                                        </cells>
+                                         <cells>
+                                            <Text text="{i18n>testText}" />
+                                        </cells>
+                                        <cells>
+                                            <Text text="{i18n>testText}" />
+                                        </cells>
+                                         <cells>
+                                            <Button text="Update" press=".updateUser"/>	
                                         </cells>
                                        </ColumnListItem>
                                 </items>

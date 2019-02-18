@@ -4,10 +4,13 @@
 			<Page title="{i18n>homePageTitle}">
             <Panel class="sapUiResponsiveMargin" width="auto">
 					<content>
-						<Label text="Name" class="sapUiSmallMargin" />
+						<Label text="ID" class="sapUiSmallMargin" />
+      					<Input id="input_id" width="200px" />	
+                        <Button text="Create" press=".createUser"/>	
+			            <Label text="Name" class="sapUiSmallMargin" />
       					<Input id="input_name" width="200px" />	
-						<Button text="Create" press=".createUser"/>		
-					</content>
+                        <Button text="Update" press=".updateUser"/>	
+                    </content>
 				</Panel>
 				<Panel class="sapUiResponsiveMargin" width="auto">
 					<content>
@@ -24,6 +27,12 @@
                                     <Column id="nameColumn">
                                         <Text text="{i18n>nameLabelText}" />
                                     </Column>
+                                    <Column id="dateOfCreateColumn">
+                                        <Text text="{i18n>dateOfCreateLabelText}" />
+                                    </Column>
+                                    <Column id="dateOfUpdateColumn">
+                                        <Text text="{i18n>dateOfUpdateLabelText}" />
+                                    </Column>
                                </columns>
                                 <items>
                                     <ColumnListItem>
@@ -33,7 +42,13 @@
                                         <cells>
                                             <Text text="{users>name}" />
                                         </cells>
-                                       </ColumnListItem>
+                                         <cells>
+                                            <Text text="{i18n>testText}" />
+                                        </cells>
+                                        <cells>
+                                            <Text text="{i18n>testText}" />
+                                        </cells>
+                                    </ColumnListItem>
                                 </items>
                             </Table>
 					</content>
