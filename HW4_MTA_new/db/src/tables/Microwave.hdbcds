@@ -1,0 +1,13 @@
+namespace HiMTA; 
+ 
+using HiMTA::ExtraInfo.Services;
+
+
+entity Microwave {
+    @Comment: 'Id of Microwave'
+    key microid : String(4);
+    @Comment: 'Description'
+    brand : String(100);
+
+    toServices : Association[*] to Services on toServices.microid = microid;
+};

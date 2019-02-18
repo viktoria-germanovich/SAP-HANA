@@ -1,0 +1,22 @@
+service namespace "HiMTA"{
+
+    "HiMTA::Microwave" as "Microwaves"
+                navigates("Microwaves_2_Services" as "toServices")
+            create using "xsjs.microwave:microCreate.xsjslib::microCreate"
+            update using "xsjs.microwave:microUpdate.xsjslib::microUpdate"
+            delete forbidden;
+
+"HiMTA::ExtraInfo.Services" as "Services"
+                navigates("Services_2_Microwave" as "toMicrowave")
+            create forbidden
+            update forbidden
+            delete forbidden;
+
+    
+
+    association "Microwaves_2_Services" principal "Microwaves"("microid")
+            multiplicity "1" dependent "Services"("servid") multiplicity "*";
+
+    association "Services_2_Microwave" principal "Services"("microid")
+            multiplicity "1" dependent "Microwaves"("microid") multiplicity "*";
+}
