@@ -15,32 +15,30 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.leverx.leverxspringdemo.dao.intfce.IPersonDao;
-import com.leverx.leverxspringdemo.domain.Person;
+import com.leverx.leverxspringdemo.dao.intfce.IMicrowaveDao;
+import com.leverx.leverxspringdemo.domain.Microwave;
 
 @Repository
-public class PersonDao implements IPersonDao {
+public class MicrowaveDao implements IMicrowaveDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(PersonDao.class);
+	private static final Logger logger = LoggerFactory.getLogger(MicrowaveDao.class);
 
 	@Autowired
 	private DataSource dataSource;
 
 	@Override
-	public Optional<Person> getById(Long id) {
-		Optional<Person> entity = null;
+	public Optional<Microwave> getById(String id) {
+		Optional<Microwave> entity = null;
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn.prepareStatement(
-						"SELECT TOP 1 \"id\", \"name\", \"surname\", \"age\" FROM \"javaCFMTA::Person\" WHERE \"id\" = ?")) {
-			stmnt.setLong(1, id);
+						"SELECT TOP 1 \"microid\", \"brand\" FROM \"HiMTA::Microwave\" WHERE \"microid\" = ?")) {
+			stmnt.setString(1, id);
 			ResultSet result = stmnt.executeQuery();
 			if (result.next()) {
-				Person person = new Person();
-				person.setId(id);
-				person.setName(result.getString("name"));
-				person.setSurname(result.getString("surname"));
-				person.setAge(result.getInt("age"));
-				entity = Optional.of(person);
+				Microwave microwave = new Microwave();
+				microwave.setMicroid(id);
+				microwave.setBrand(result.getString("brand"));
+				entity = Optional.of(microwave);
 			} else {
 				entity = Optional.empty();
 			}
@@ -51,34 +49,30 @@ public class PersonDao implements IPersonDao {
 	}
 
 	@Override
-	public List<Person> getAll() {
-		List<Person> personList = new ArrayList<Person>();
+	public List<Microwave> getAll() {
+		List<Microwave> microwaveList = new ArrayList<Microwave>();
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn
-						.prepareStatement("SELECT \"id\", \"name\", \"surname\", \"age\" FROM \"javaCFMTA::Person\"")) {
+						.prepareStatement("SELECT \"microid\", \"brand\" FROM \"HiMTA::Microwave\"")) {
 			ResultSet result = stmnt.executeQuery();
 			while (result.next()) {
-				Person person = new Person();
-				person.setId(result.getLong("ID"));
-				person.setName(result.getString("NAME"));
-				person.setSurname(result.getString("SURNAME"));
-				person.setAge(result.getInt("AGE"));
-				personList.add(person);
+				Microwave microwave = new Microwave();
+				microwave.setMicroid(result.getString("microid"));
+				microwave.setBrand(result.getString("brand"));
+				microwaveList.add(microwave);
 			}
 		} catch (SQLException e) {
 			logger.error("Error while trying to get list of entities: " + e.getMessage());
 		}
-		return personList;
+		return microwaveList;
 	}
 
 	@Override
-	public void save(Person entity) {
+	public void save(Microwave entity) {
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn.prepareStatement(
-						"INSERT INTO \"javaCFMTA::Person\"(\"name\", \"surname\", \"age\") VALUES (?, ?, ?)")) {
-			stmnt.setString(1, entity.getName());
-			stmnt.setString(2, entity.getSurname());
-			stmnt.setInt(3, entity.getAge());
+						"INSERT INTO \"HiMTA::Microwave\"(\"brand\") VALUES (?)")) {
+			stmnt.setString(1, entity.getBrand());
 			stmnt.execute();
 		} catch (SQLException e) {
 			logger.error("Error while trying to add entity: " + e.getMessage());
@@ -86,10 +80,10 @@ public class PersonDao implements IPersonDao {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(String id) {
 		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmnt = conn.prepareStatement("DELETE FROM \"javaCFMTA::Person\" WHERE \"id\" = ?")) {
-			stmnt.setLong(1, id);
+				PreparedStatement stmnt = conn.prepareStatement("DELETE FROM \"HiMTA::Microwave\" WHERE \"microid\" = ?")) {
+			stmnt.setString(1, id);
 			stmnt.execute();
 		} catch (SQLException e) {
 			logger.error("Error while trying to delete entity: " + e.getMessage());
@@ -97,14 +91,11 @@ public class PersonDao implements IPersonDao {
 	}
 
 	@Override
-	public void update(Person entity) {
+	public void update(Microwave entity) {
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn.prepareStatement(
-						"UPDATE \"javaCFMTA::Person\" SET \"name\" = ?, \"surname\" = ?, \"age\" = ? WHERE \"id\" = ?")) {
-			stmnt.setString(1, entity.getName());
-			stmnt.setString(2, entity.getSurname());
-			stmnt.setInt(3, entity.getAge());
-			stmnt.setLong(4, entity.getId());
+						"UPDATE \"HiMTA::Microwave\" SET \"brand\" = ? WHERE \"microid\" = ?")) {
+			stmnt.setString(1, entity.getBrand());
 			stmnt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error("Error while trying to update entity: " + e.getMessage());

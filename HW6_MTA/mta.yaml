@@ -57,7 +57,7 @@ resources:
    parameters:
      service-plan: hdi-shared
      service: hanatrial
-     config: {schema: VI}
+     config: {schema: VH}
    properties:
      hdi-container-name: ${service-name}
    type: com.sap.xs.hdi-container

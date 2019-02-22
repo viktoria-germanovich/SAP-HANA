@@ -1,0 +1,16 @@
+﻿namespace HiMTA;
+using HiMTA::Microwave;
+
+context ExtraInfo{
+
+		entity Services {
+		    @Comment: 'Id of Service'
+		    key servid : String(4);
+		    @Comment: 'Microwave in Service'
+		    microid : String(4);
+		    @Comment: 'Address'
+		    address : String(100);
+
+    		toMicrowave : Association[*] to Microwave on toMicrowave.microid = microid;
+		};
+};
