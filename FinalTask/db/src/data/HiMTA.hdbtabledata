@@ -1,0 +1,37 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "HiMTA::Microwave",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "HiMTA::Microwave.csv",
+        "has_header": true
+      },
+      "import_settings": {
+        "import_columns": [
+          "microid",
+          "brand",
+          "color",
+          "ts_update",
+          "ts_create"
+        ]
+      }
+    },
+    {
+      "target_table": "HiMTA::ExtraInfo.Services",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "HiMTA::Services.csv",
+        "has_header": true
+      },
+      "import_settings": {
+        "import_columns": [
+					"servid",
+          "microid",
+          "address"
+        ]
+      }
+    }
+  ]
+}

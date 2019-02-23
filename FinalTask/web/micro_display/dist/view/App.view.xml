@@ -1,0 +1,73 @@
+<mvc:View controllerName="micro_display.controller.App" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc">
+    <Shell>
+        <App id="home">
+            <Page title="{i18n>homePageTitle}">
+                <Panel class="sapUiResponsiveMargin" width="auto">
+                    <content>
+                        <Table 
+                        id="microTable" 
+                        growing="true" 
+                        growingThreshold="5" 
+                        items="{path: 'microwaves>/Microwaves'}"
+                        mode="SingleSelectMaster"
+                        selectionChange="selectFridge"
+                        headerName="Main information">
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <content>
+                                        <Text text="Enabled" />
+                                        <CheckBox selected="false" select="checkDone" enabled="true" />
+                                        <Label text="Brand" class="sapUiSmallMargin" />
+                                        <Input id="input_brand" placeholder="{i18n>Placeholder}" width="250px" enabled="false" />
+                                        <Label text="Color" class="sapUiSmallMargin" />
+                                        <Input id="input_color" placeholder="{i18n>Placeholder}" width="250px" enabled="false" />
+                                    </content>
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column id="idColumn">
+                                    <Text text="{i18n>idNameLabelText}" />
+                                </Column>
+                                <Column id="brandColumn">
+                                    <Text text="{i18n>brandLabelText}" />
+                                </Column>
+                                 <Column id="colorColumn">
+                                    <Text text="{i18n>colorLabelText}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{microwaves>microid}" />
+                                    </cells>
+                                    <cells>
+                                        <Text text="{microwaves>brand}" />
+                                    </cells>
+                                     <cells>
+                                        <Text text="{microwaves>color}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </content>
+                </Panel>
+                <Panel id="productDetailsPanel" headerText="{i18n>addInfoHeader}" class="sapUiResponsiveMargin" width="auto">
+                    <l:VerticalLayout>
+                        <Label text="{i18n>Created}:" />
+                        <Text id="dateCreate" />
+                        <Label text="{i18n>Updated}:" />
+                        <Text id="dateUpdate" />
+                    </l:VerticalLayout>
+                </Panel>
+                <footer>
+                    <Toolbar>
+                        <ToolbarSpacer />
+                        <Button id="createButton" text="Create" icon="sap-icon://add" press=".createMicrowave" enabled="false" />
+                        <Button id="updateButton" text="Edit" icon="sap-icon://edit" press=".updateMicrowave" enabled="false" />
+                        <Button id="deleteButton" text="Delete" icon="sap-icon://delete" press=".deleteMicrowave" />
+                    </Toolbar>
+                </footer>
+            </Page>
+        </App>
+    </Shell>
+</mvc:View>
