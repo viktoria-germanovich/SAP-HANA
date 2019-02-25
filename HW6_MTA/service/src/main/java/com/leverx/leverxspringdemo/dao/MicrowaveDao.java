@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.leverx.leverxspringdemo.dao.intfce.IMicrowaveDao;
 import com.leverx.leverxspringdemo.domain.Microwave;
+import com.leverx.leverxspringdemo.domain.Services;
 
 @Repository
 public class MicrowaveDao implements IMicrowaveDao {
@@ -46,6 +47,35 @@ public class MicrowaveDao implements IMicrowaveDao {
 			logger.error("Error while trying to get entity by Id: " + e.getMessage());
 		}
 		return entity;
+	}
+	public Microwave getServices(String id) throws SQLException {
+
+		Connection conn = dataSource.getConnection();
+		PreparedStatement stmnt = conn.prepareStatement("SELECT TOP 1 \"microid\", \"brand\" FROM \"HiMTA::Microwave\" WHERE \"microid\" = ?");
+		stmnt.setString(1, id);
+			ResultSet result = stmnt.executeQuery();
+			Microwave microwave = new Microwave();
+			if (result.next()) {
+				microwave.setMicroid(id);
+				microwave.setBrand(result.getString("brand"));
+				
+			}
+
+		List<Services> servList = new ArrayList<Services>();
+
+			PreparedStatement stmnt2 = conn.prepareStatement("SELECT \"servid\", \"microid\", \"address\" FROM \"HiMTA::ExtraInfo.Services\" WHERE \"servid\" = ? ");
+			stmnt2.setString(1, id);
+			ResultSet result2 = stmnt2.executeQuery();
+			while (result2.next()) {
+				Services services = new Services();
+				services.setServid(result2.getString("servid"));
+				services.setMicroid(result2.getString("microid"));
+				services.setAddress(result2.getString("address"));
+				servList.add(services);
+			}
+			microwave.servList = servList;
+			conn.close();
+		return microwave;
 	}
 
 	@Override

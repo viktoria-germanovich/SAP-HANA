@@ -79,13 +79,21 @@
 				"defaultCountMode": "Inline",
 				"useBatch": false,
 				"disableHeadRequestForToken": true
-    			}
-			}
-		},
+				}
+			},
+			"microModel": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "./model/microwaveModel.json"
+			  },
+			  "configModel": {
+				"type": "sap.ui.model.json.JSONModel",
+				"uri": "./model/config.json"
+			  }
+		}
+	},
 		"resources": {
 			"css": [{
 				"uri": "css/style.css"
 			}]
 		}
 	}
-}

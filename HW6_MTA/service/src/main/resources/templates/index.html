@@ -6,6 +6,7 @@
 </head>
 <body>
 	<h2 th:text="'Hello, ' + ${appName} + '.Glad to see you!'">Application</h2>
+	<p th:text="'SpaceName: ' + ${VCAP}">VCAP: </p> 
 	<h3>Destinations:</h3>
 	<div th:each="destination: ${destinations}">
 		<p>-------------------------------------------------</p>

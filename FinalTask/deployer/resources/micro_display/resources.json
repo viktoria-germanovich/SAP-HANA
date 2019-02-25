@@ -32,6 +32,9 @@
             "name": "manifest.json"
         },
         {
+            "name": "model\\microwaveModel.json"
+        },
+        {
             "name": "tmp\\Component-preload.js",
             "merged": true
         },
@@ -50,6 +53,9 @@
         },
         {
             "name": "tmp\\manifest.json"
+        },
+        {
+            "name": "tmp\\model\\microwaveModel.json"
         },
         {
             "name": "tmp\\view\\App.view.xml"

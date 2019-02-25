@@ -1,5 +1,6 @@
 package com.leverx.leverxspringdemo.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,9 @@ public class MicrowaveService {
 	
 	public List<Microwave> getMicrowaveAll() {
 		return microwaveDao.getAll();
+	}
+	public Microwave getMicroServices(String id) throws SQLException {
+		return microwaveDao.getServices(id);
 	}
 	
 	public Microwave getMicrowave(String id) {

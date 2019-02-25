@@ -5,21 +5,25 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("micro_display.controller.App", {
+		
 		onInit: function () {
-			console.log("controller init")
+			this.oTable = this.getView().byId("microTable");
+			this.mModel = this.getView().getModel("microModel");
+			this.cModel = this.getView().getModel("configModel");
 		},
+
 		createMicrowave: function () {
-			var Brand = this.getView().byId("input_brand").getValue();
-			var Color = this.getView().byId("input_color").getValue();
+			var Brand = this.mModel.getProperty("/brand");
+			var Color = this.mModel.getProperty("/color");
 			if (Brand === "" || Color === "") {
 				MessageToast.show("Type in a brand and a color!");
 			} else {
-				var oModel = {};
-				oModel.brand = Brand;
-				oModel.color = Color;
 
+				var obj = this.mModel.getData();
+				delete obj.ts_update;
+				delete obj.ts_create;
 				var oDataModel = this.getView().getModel("microwaves");
-				oDataModel.create('/Microwaves', oModel, {
+				oDataModel.create('/Microwaves', obj, {
 					sucsess: function () {
 						jQuery.sap.log.info("Sucsess");
 					},
@@ -29,25 +33,20 @@ sap.ui.define([
 				});
 			}
 		},
+		
 		updateMicrowave: function () {
-			var oTable = this.getView().byId("microTable");
-			var Brand = this.getView().byId("input_brand").getValue();
-			var Color = this.getView().byId("input_color").getValue();
-			var oSelectedItem = oTable.getSelectedItem();
-			var index = oTable.indexOfItem(oSelectedItem);
+			
+			var oSelectedItem =this.oTable.getSelectedItem();
+			var index = this.oTable.indexOfItem(oSelectedItem);
 			if (index === -1) {
 				MessageToast.show("Row is not selected!");
 			} else {
-				var microid = oTable.getSelectedItem().getBindingContext("microwaves").getObject().microid;
+				var microid = oSelectedItem.getBindingContext("microwaves").getProperty("microid");
 
-				var oModel = {};
-				oModel.brand = Brand;
-				oModel.color = Color;
-				oModel.ts_update = null;
-				oModel.ts_create = null;
+				var obj = this.mModel.getData();
 
 				var oDataModel = this.getView().getModel("microwaves");
-				oDataModel.update("/Microwaves('" + microid + "')", oModel, {
+				oDataModel.update("/Microwaves('" + microid + "')", obj, {
 					merge: false,
 					success: function () {
 						jQuery.sap.log.info("Sucsess");
@@ -59,14 +58,13 @@ sap.ui.define([
 			}
 		},
 		deleteMicrowave: function () {
-			var oTable = this.getView().byId("microTable");
-			var oSelectedItem = oTable.getSelectedItem();
-			var index = oTable.indexOfItem(oSelectedItem);
+			var oSelectedItem = this.oTable.getSelectedItem();
+			var index = this.oTable.indexOfItem(oSelectedItem);
 
 			if (index === -1) {
 				MessageToast.show("Row is not selected!");
 			} else {
-				var microid = oTable.getSelectedItem().getBindingContext("microwaves").getObject().microid;
+				var microid = this.oTable.getSelectedItem().getBindingContext("microwaves").getObject().microid;
 				var settings = {
 					"async": true,
 					"crossDomain": true,
@@ -86,53 +84,43 @@ sap.ui.define([
 
 		checkDone: function (oEvent) {
 			var check = oEvent.getParameter("selected");
-			if (check) {
-				this.getView().byId("input_brand").setEnabled(true);
-				this.getView().byId("input_color").setEnabled(true);
-				this.getView().byId("createButton").setEnabled(true);
-				this.getView().byId("updateButton").setEnabled(true);
-			} else {
-				this.getView().byId("input_brand").setEnabled(false);
-				this.getView().byId("input_color").setEnabled(false);
-				this.getView().byId("createButton").setEnabled(false);
-				this.getView().byId("updateButton").setEnabled(false);
-			}
+			this.cModel.setProperty("/bool",check);
 		},
 
-		selectFridge: function() {
-			var oTable = this.byId("microTable");
-			var selItem = oTable.getSelectedItem();
+		selectFridge: function () {
+			var selItem = this.oTable.getSelectedItem();
 			var obj = selItem.getBindingContext("microwaves").getObject();
 			this.byId("dateCreate").setText(obj.ts_create);
 			this.byId("dateUpdate").setText(obj.ts_update);
-		//   },
+			//   },
 
-		//   onDialogPress: function () {
-		// 	if (!this.pressDialog) {
-		// 		this.pressDialog = new Dialog({
-		// 			title: 'Serivices',
-		// 			content: new List({
-		// 				items: {
-		// 					path: '/ProductCollection',
-		// 					template: new StandardListItem({
-		// 						title: "{Name}",
-		// 						counter: "{Quantity}"
-		// 					})
-		// 				}
-		// 			}),
-		// 			beginButton: new Button({
-		// 				text: 'Close',
-		// 				press: function () {
-		// 					this.pressDialog.close();
-		// 				}.bind(this)
-		// 			})
-		// 		});
+			//   onDialogPress: function () {
+			// 	if (!this.pressDialog) {
+			// 		this.pressDialog = new Dialog({
+			// 			title: 'Serivices',
+			// 			content: new List({
+			// 				items: {
+			// 					path: '/ProductCollection',
+			// 					template: new StandardListItem({
+			// 						title: "{Name}",
+			// 						counter: "{Quantity}"
+			// 					})
+			// 				}
+			// 			}),
+			// 			beginButton: new Button({
+			// 				text: 'Close',
+			// 				press: function () {
+			// 					this.pressDialog.close();
+			// 				}.bind(this)
+			// 			})
+			// 		});
 
-		// 		//to get access to the global model
-		// 		this.getView().addDependent(this.pressDialog);
-		// 	}
+			// 		//to get access to the global model
+			// 		this.getView().addDependent(this.pressDialog);
+			// 	}
 
-		// 	this.pressDialog.open();
-		// }
+			// 	this.pressDialog.open();
+			// }
+		}
 	});
 });

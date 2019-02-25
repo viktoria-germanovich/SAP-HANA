@@ -4,23 +4,17 @@
             <Page title="{i18n>homePageTitle}">
                 <Panel class="sapUiResponsiveMargin" width="auto">
                     <content>
-                        <Table 
-                        id="microTable" 
-                        growing="true" 
-                        growingThreshold="5" 
-                        items="{path: 'microwaves>/Microwaves'}"
-                        mode="SingleSelectMaster"
-                        selectionChange="selectFridge"
-                        headerName="Main information">
+                        <Table id="microTable" growing="true" growingThreshold="5" items="{path: 'microwaves>/Microwaves'}"
+                            mode="SingleSelectMaster" selectionChange="selectFridge" >
                             <headerToolbar>
                                 <OverflowToolbar>
                                     <content>
                                         <Text text="Enabled" />
                                         <CheckBox selected="false" select="checkDone" enabled="true" />
                                         <Label text="Brand" class="sapUiSmallMargin" />
-                                        <Input id="input_brand" placeholder="{i18n>Placeholder}" width="auto" enabled="false" />
+                                        <Input placeholder="{i18n>Placeholder}" width="auto" enabled="{configModel>/bool}" value="{microModel>/brand}"/>
                                         <Label text="Color" class="sapUiSmallMargin" />
-                                        <Input id="input_color" placeholder="{i18n>Placeholder}" width="auto" enabled="false" />
+                                        <Input placeholder="{i18n>Placeholder}" width="auto" enabled="{configModel>/bool}" value="{microModel>/color}"/>
                                         <Button text="{i18n>serviceButton}" width="auto" press="onDialogPress" class="sapUiSmallMarginBottom" />
                                     </content>
                                 </OverflowToolbar>
@@ -32,12 +26,12 @@
                                 <Column id="brandColumn">
                                     <Text text="{i18n>brandLabelText}" />
                                 </Column>
-                                 <Column id="colorColumn">
+                                <Column id="colorColumn">
                                     <Text text="{i18n>colorLabelText}" />
                                 </Column>
-                                <!-- <Column id="serviceColumn">
+                                <Column id="serviceColumn">
                                     <Text text="{i18n>serviceLabelText}" />
-                                </Column> -->
+                                </Column>
                             </columns>
                             <items>
                                 <ColumnListItem>
@@ -47,12 +41,12 @@
                                     <cells>
                                         <Text text="{microwaves>brand}" />
                                     </cells>
-                                     <cells>
+                                    <cells>
                                         <Text text="{microwaves>color}" />
                                     </cells>
-                                    <!-- <cells>
+                                    <cells>
                                     	<Button text="{i18n>serviceButton}" width="auto" press="onDialogPress" class="sapUiSmallMarginBottom" />
-                                    </cells> -->
+                                    </cells>
                                 </ColumnListItem>
                             </items>
                         </Table>
@@ -69,9 +63,9 @@
                 <footer>
                     <Toolbar>
                         <ToolbarSpacer />
-                        <Button id="createButton" text="Create" icon="sap-icon://add" press=".createMicrowave" enabled="false" />
-                        <Button id="updateButton" text="Edit" icon="sap-icon://edit" press=".updateMicrowave" enabled="false" />
-                        <Button id="deleteButton" text="Delete" icon="sap-icon://delete" press=".deleteMicrowave" />
+                        <Button text="Create" icon="sap-icon://add" press=".createMicrowave" enabled="{configModel>/bool}" />
+                        <Button text="Edit" icon="sap-icon://edit" press=".updateMicrowave" enabled="{configModel>/bool}" />
+                        <Button text="Delete" icon="sap-icon://delete" press=".deleteMicrowave" />
                     </Toolbar>
                 </footer>
             </Page>

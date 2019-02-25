@@ -4,23 +4,18 @@
             <Page title="{i18n>homePageTitle}">
                 <Panel class="sapUiResponsiveMargin" width="auto">
                     <content>
-                        <Table 
-                        id="microTable" 
-                        growing="true" 
-                        growingThreshold="5" 
-                        items="{path: 'microwaves>/Microwaves'}"
-                        mode="SingleSelectMaster"
-                        selectionChange="selectFridge"
-                        headerName="Main information">
+                        <Table id="microTable" growing="true" growingThreshold="5" items="{path: 'microwaves>/Microwaves'}"
+                            mode="SingleSelectMaster" selectionChange="selectFridge" >
                             <headerToolbar>
                                 <OverflowToolbar>
                                     <content>
                                         <Text text="Enabled" />
                                         <CheckBox selected="false" select="checkDone" enabled="true" />
                                         <Label text="Brand" class="sapUiSmallMargin" />
-                                        <Input id="input_brand" placeholder="{i18n>Placeholder}" width="250px" enabled="false" />
+                                        <Input id="input_brand" placeholder="{i18n>Placeholder}" width="auto" enabled="false" value="{microModel>/brand}"/>
                                         <Label text="Color" class="sapUiSmallMargin" />
-                                        <Input id="input_color" placeholder="{i18n>Placeholder}" width="250px" enabled="false" />
+                                        <Input id="input_color" placeholder="{i18n>Placeholder}" width="auto" enabled="false" />
+                                        <Button text="{i18n>serviceButton}" width="auto" press="onDialogPress" class="sapUiSmallMarginBottom" />
                                     </content>
                                 </OverflowToolbar>
                             </headerToolbar>
@@ -31,8 +26,11 @@
                                 <Column id="brandColumn">
                                     <Text text="{i18n>brandLabelText}" />
                                 </Column>
-                                 <Column id="colorColumn">
+                                <Column id="colorColumn">
                                     <Text text="{i18n>colorLabelText}" />
+                                </Column>
+                                <Column id="serviceColumn">
+                                    <Text text="{i18n>serviceLabelText}" />
                                 </Column>
                             </columns>
                             <items>
@@ -43,8 +41,11 @@
                                     <cells>
                                         <Text text="{microwaves>brand}" />
                                     </cells>
-                                     <cells>
+                                    <cells>
                                         <Text text="{microwaves>color}" />
+                                    </cells>
+                                    <cells>
+                                    	<Button text="{i18n>serviceButton}" width="auto" press="onDialogPress" class="sapUiSmallMarginBottom" />
                                     </cells>
                                 </ColumnListItem>
                             </items>

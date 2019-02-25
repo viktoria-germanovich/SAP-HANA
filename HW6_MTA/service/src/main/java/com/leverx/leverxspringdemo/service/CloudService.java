@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sap.cloud.sdk.cloudplatform.CloudPlatform;
+import com.sap.cloud.sdk.cloudplatform.ScpCfCloudPlatform;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.GenericDestination;
-
+import com.google.gson.JsonElement;
 import com.leverx.leverxspringdemo.domain.Destination;
 import com.leverx.leverxspringdemo.domain.Property;
 
@@ -18,11 +19,14 @@ import com.leverx.leverxspringdemo.domain.Property;
 @Service
 public class CloudService {
 	
-	@Autowired
-	private CloudPlatform platform;
+	@Autowired private CloudPlatform platform;
+	@Autowired private ScpCfCloudPlatform spacename;
 	
 	public String getApplicationName() {
 		return platform.getApplicationName();
+	}
+	public Map<String, JsonElement> getSpaceName() {
+		return spacename.getVcapApplication();
 	}
 	
 	public List<Destination> getDestinations() {

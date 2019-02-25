@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.gson.JsonElement;
 import com.leverx.leverxspringdemo.domain.Destination;
 
 import com.leverx.leverxspringdemo.service.CloudService;
@@ -14,6 +15,7 @@ import com.sap.cloud.sdk.cloudplatform.CloudPlatform;
 import com.sap.cloud.sdk.s4hana.connectivity.exception.AccessDeniedException;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -28,6 +30,9 @@ public class HomeController {
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String getHome(Model model) {
+		Map<String, JsonElement> vcap = cloudService.getSpaceName();
+		JsonElement vc = vcap.get("space_name");
+		model.addAttribute("VCAP",vc.toString());
 		String appName = platform.getApplicationName();
 		model.addAttribute("appName", appName);
 		List<Destination> destinations = cloudService.getDestinations();

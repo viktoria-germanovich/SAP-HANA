@@ -1,19 +1,16 @@
 package com.leverx.leverxspringdemo.domain;
 
 public class Products {
-	
-private String name;
-	
-private String description;
-	
-private int Id;
+	private int id;
+	private String name;
+	private String description;
 
-	public String getDescription() {
-		return description;
+	public int getId() {
+		return id;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -24,12 +21,12 @@ private int Id;
 		this.name = name;
 	}
 
-	public int getId() {
-		return Id;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setId(int id) {
-		Id = id;
+	public void setDescription(String descr) {
+		this.description = descr;
 	}
-	
+
 }

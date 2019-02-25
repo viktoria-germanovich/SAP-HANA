@@ -6,10 +6,12 @@ sap.ui.define([
 
 	return Controller.extend("micro_display.controller.App", {
 		onInit: function () {
-			console.log("controller init")
+			this.mModel = this.getView().getModel("microModel");
 		},
+
 		createMicrowave: function () {
-			var Brand = this.getView().byId("input_brand").getValue();
+			// var Brand = this.getView().byId("input_brand").getValue();
+			var Brand = this.mModel.getProperty("/brand");
 			var Color = this.getView().byId("input_color").getValue();
 			if (Brand === "" || Color === "") {
 				MessageToast.show("Type in a brand and a color!");
@@ -105,6 +107,35 @@ sap.ui.define([
 			var obj = selItem.getBindingContext("microwaves").getObject();
 			this.byId("dateCreate").setText(obj.ts_create);
 			this.byId("dateUpdate").setText(obj.ts_update);
-		  }
+		//   },
+
+		//   onDialogPress: function () {
+		// 	if (!this.pressDialog) {
+		// 		this.pressDialog = new Dialog({
+		// 			title: 'Serivices',
+		// 			content: new List({
+		// 				items: {
+		// 					path: '/ProductCollection',
+		// 					template: new StandardListItem({
+		// 						title: "{Name}",
+		// 						counter: "{Quantity}"
+		// 					})
+		// 				}
+		// 			}),
+		// 			beginButton: new Button({
+		// 				text: 'Close',
+		// 				press: function () {
+		// 					this.pressDialog.close();
+		// 				}.bind(this)
+		// 			})
+		// 		});
+
+		// 		//to get access to the global model
+		// 		this.getView().addDependent(this.pressDialog);
+		// 	}
+
+		// 	this.pressDialog.open();
+		// }
+		}
 	});
 });

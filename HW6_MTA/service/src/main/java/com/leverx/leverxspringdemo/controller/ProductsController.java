@@ -1,5 +1,7 @@
 package com.leverx.leverxspringdemo.controller;
 
+
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,10 @@ import com.leverx.leverxspringdemo.service.ProductService;
 import com.sap.cloud.sdk.odatav2.connectivity.ODataException;
 
 @RestController public class ProductsController {    
- @Autowired 
- private ProductService productService; 
-    @GetMapping(value="/products") 
-    public List<Products> getAllProducts() throws ODataException {   
-     return productService.getProductAll();  
-     }
+	@Autowired 
+	private ProductService productService; 
+	   @GetMapping(value="/products") 
+	   public List<Products> getAllProducts() throws ODataException {   
+		   return productService.getProductsOdata("XSOData");  
+		   }
 }
