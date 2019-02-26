@@ -26,7 +26,7 @@ import com.leverx.leverxspringdemo.domain.Services;
 public class MicrowaveDao implements IMicrowaveDao {
 	
 	private static final String MICRO_TABLE = "\"HiMTA::Microwave\"";
-	private static final String SERVICES_TABLE = "\"HiMTA::Microwave\"";
+	private static final String SERVICES_TABLE = "\"HiMTA::ExtraInfo.Services\"";
 
 	private static final Logger logger = LoggerFactory.getLogger(MicrowaveDao.class);
 

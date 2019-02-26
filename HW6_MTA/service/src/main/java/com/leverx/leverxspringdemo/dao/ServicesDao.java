@@ -21,7 +21,7 @@ import com.leverx.leverxspringdemo.domain.Services;
 @Repository
 public class ServicesDao implements IServicesDao {
 	
-	private static final String SERVICES_TABLE = "\"HiMTA::Microwave\"";
+	private static final String SERVICES_TABLE = "\"HiMTA::ExtraInfo.Services\"";
 
 	private static final Logger logger = LoggerFactory.getLogger(ServicesDao.class);
 
