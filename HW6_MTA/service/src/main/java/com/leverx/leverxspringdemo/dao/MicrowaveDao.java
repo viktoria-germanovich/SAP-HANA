@@ -1,6 +1,8 @@
 package com.leverx.leverxspringdemo.dao;
 
 import java.sql.Connection;
+
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,8 +21,12 @@ import com.leverx.leverxspringdemo.dao.intfce.IMicrowaveDao;
 import com.leverx.leverxspringdemo.domain.Microwave;
 import com.leverx.leverxspringdemo.domain.Services;
 
+
 @Repository
 public class MicrowaveDao implements IMicrowaveDao {
+	
+	private static final String MICRO_TABLE = "\"HiMTA::Microwave\"";
+	private static final String SERVICES_TABLE = "\"HiMTA::Microwave\"";
 
 	private static final Logger logger = LoggerFactory.getLogger(MicrowaveDao.class);
 
@@ -32,7 +38,7 @@ public class MicrowaveDao implements IMicrowaveDao {
 		Optional<Microwave> entity = null;
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn.prepareStatement(
-						"SELECT TOP 1 \"microid\", \"brand\" FROM \"HiMTA::Microwave\" WHERE \"microid\" = ?")) {
+						"SELECT TOP 1 \"microid\", \"brand\" FROM "+ MICRO_TABLE +" WHERE \"microid\" = ?")) {
 			stmnt.setString(1, id);
 			ResultSet result = stmnt.executeQuery();
 			if (result.next()) {
@@ -48,33 +54,36 @@ public class MicrowaveDao implements IMicrowaveDao {
 		}
 		return entity;
 	}
+
 	public Microwave getServices(String id) throws SQLException {
 
 		Connection conn = dataSource.getConnection();
-		PreparedStatement stmnt = conn.prepareStatement("SELECT TOP 1 \"microid\", \"brand\" FROM \"HiMTA::Microwave\" WHERE \"microid\" = ?");
+		PreparedStatement stmnt = conn.prepareStatement(
+				"SELECT TOP 1 \"microid\", \"brand\" FROM "+ MICRO_TABLE +" WHERE \"microid\" = ?");
 		stmnt.setString(1, id);
-			ResultSet result = stmnt.executeQuery();
-			Microwave microwave = new Microwave();
-			if (result.next()) {
-				microwave.setMicroid(id);
-				microwave.setBrand(result.getString("brand"));
-				
-			}
+		ResultSet result = stmnt.executeQuery();
+		Microwave microwave = new Microwave();
+		if (result.next()) {
+			microwave.setMicroid(id);
+			microwave.setBrand(result.getString("brand"));
+
+		}
 
 		List<Services> servList = new ArrayList<Services>();
 
-			PreparedStatement stmnt2 = conn.prepareStatement("SELECT \"servid\", \"microid\", \"address\" FROM \"HiMTA::ExtraInfo.Services\" WHERE \"servid\" = ? ");
-			stmnt2.setString(1, id);
-			ResultSet result2 = stmnt2.executeQuery();
-			while (result2.next()) {
-				Services services = new Services();
-				services.setServid(result2.getString("servid"));
-				services.setMicroid(result2.getString("microid"));
-				services.setAddress(result2.getString("address"));
-				servList.add(services);
-			}
-			microwave.servList = servList;
-			conn.close();
+		PreparedStatement stmnt2 = conn.prepareStatement(
+				"SELECT \"servid\", \"microid\", \"address\" FROM "+ SERVICES_TABLE +" WHERE \"servid\" = ? ");
+		stmnt2.setString(1, id);
+		ResultSet result2 = stmnt2.executeQuery();
+		while (result2.next()) {
+			Services services = new Services();
+			services.setServid(result2.getString("servid"));
+			services.setMicroid(result2.getString("microid"));
+			services.setAddress(result2.getString("address"));
+			servList.add(services);
+		}
+		microwave.servList = servList;
+		conn.close();
 		return microwave;
 	}
 
@@ -83,7 +92,7 @@ public class MicrowaveDao implements IMicrowaveDao {
 		List<Microwave> microwaveList = new ArrayList<Microwave>();
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn
-						.prepareStatement("SELECT \"microid\", \"brand\" FROM \"HiMTA::Microwave\"")) {
+						.prepareStatement("SELECT \"microid\", \"brand\" FROM "+ MICRO_TABLE +"")) {
 			ResultSet result = stmnt.executeQuery();
 			while (result.next()) {
 				Microwave microwave = new Microwave();
@@ -100,8 +109,8 @@ public class MicrowaveDao implements IMicrowaveDao {
 	@Override
 	public void save(Microwave entity) {
 		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmnt = conn.prepareStatement(
-						"INSERT INTO \"HiMTA::Microwave\"(\"brand\") VALUES (?)")) {
+				PreparedStatement stmnt = conn
+						.prepareStatement("INSERT INTO "+ MICRO_TABLE +"(\"brand\") VALUES (?)")) {
 			stmnt.setString(1, entity.getBrand());
 			stmnt.execute();
 		} catch (SQLException e) {
@@ -112,7 +121,8 @@ public class MicrowaveDao implements IMicrowaveDao {
 	@Override
 	public void delete(String id) {
 		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmnt = conn.prepareStatement("DELETE FROM \"HiMTA::Microwave\" WHERE \"microid\" = ?")) {
+				PreparedStatement stmnt = conn
+						.prepareStatement("DELETE FROM "+ MICRO_TABLE +" WHERE \"microid\" = ?")) {
 			stmnt.setString(1, id);
 			stmnt.execute();
 		} catch (SQLException e) {
@@ -123,8 +133,8 @@ public class MicrowaveDao implements IMicrowaveDao {
 	@Override
 	public void update(Microwave entity) {
 		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmnt = conn.prepareStatement(
-						"UPDATE \"HiMTA::Microwave\" SET \"brand\" = ? WHERE \"microid\" = ?")) {
+				PreparedStatement stmnt = conn
+						.prepareStatement("UPDATE "+ MICRO_TABLE +" SET \"brand\" = ? WHERE \"microid\" = ?")) {
 			stmnt.setString(1, entity.getBrand());
 			stmnt.executeUpdate();
 		} catch (SQLException e) {

@@ -1,0 +1,33 @@
+<core:FragmentDefinition
+   xmlns="sap.m"
+   xmlns:core="sap.ui.core"
+   xmlns:l="sap.ui.layout" >
+   <Dialog
+      id="Dialog"
+      title="{i18n>dialogTitle}">
+      <l:VerticalLayout>
+         <l:content>
+         <l:HorizontalLayout width="auto">
+        <Label text="Brand" class="sapUiSmallMargin" />
+        <Input placeholder="{i18n>brandPlaceholder}" width="300px" required="true" value="{microModel>/brand}"/>
+        </l:HorizontalLayout>
+         <l:HorizontalLayout width="auto">
+        <Label text="Color" class="sapUiSmallMargin" />
+        <Input placeholder="{i18n>colorPlaceholder}" width="300px" required="true" value="{microModel>/color}"/>
+         </l:HorizontalLayout>
+         </l:content>
+      </l:VerticalLayout>
+      <beginButton>
+         <Button
+            text="{i18n>saveButton}"
+            press="onCloseDialog"
+            type="Accept"/> 
+      </beginButton>
+      <endButton>
+      <Button
+            text="{i18n>cancelButton}"
+            press="onCloseDialog"
+            type="Reject"/> 
+      </endButton>
+   </Dialog>
+</core:FragmentDefinition>

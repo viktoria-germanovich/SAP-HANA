@@ -27,7 +27,7 @@ public class MicrowaveController {
 	}
 
 	@GetMapping(value = "/microwaveServices/{id}")
-	public Microwave getPersonCars(@PathVariable String id) throws SQLException {
+	public Microwave getMicroServices(@PathVariable String id) throws SQLException {
 		return microwaveService.getMicroServices(id);
 	}
 

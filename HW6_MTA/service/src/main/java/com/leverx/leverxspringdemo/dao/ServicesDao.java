@@ -20,6 +20,8 @@ import com.leverx.leverxspringdemo.domain.Services;
 
 @Repository
 public class ServicesDao implements IServicesDao {
+	
+	private static final String SERVICES_TABLE = "\"HiMTA::Microwave\"";
 
 	private static final Logger logger = LoggerFactory.getLogger(ServicesDao.class);
 
@@ -31,7 +33,7 @@ public class ServicesDao implements IServicesDao {
 		Optional<Services> entity = null;
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn.prepareStatement(
-						"SELECT TOP 1 \"servid\", \"microid\", \"address\" FROM \"HiMTA::ExtraInfo.Services\" WHERE \"servid\" = ?")) {
+						"SELECT TOP 1 \"servid\", \"microid\", \"address\" FROM "+ SERVICES_TABLE +" WHERE \"servid\" = ?")) {
 			stmnt.setString(1, id);
 			ResultSet result = stmnt.executeQuery();
 			if (result.next()) {
@@ -54,7 +56,7 @@ public class ServicesDao implements IServicesDao {
 		List<Services> servicesList = new ArrayList<Services>();
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn
-						.prepareStatement("SELECT \"servid\", \"microid\", \"address\" FROM \"HiMTA::ExtraInfo.Services\"")) {
+						.prepareStatement("SELECT \"servid\", \"microid\", \"address\" FROM "+ SERVICES_TABLE +"")) {
 			ResultSet result = stmnt.executeQuery();
 			while (result.next()) {
 				Services services = new Services();
@@ -73,7 +75,7 @@ public class ServicesDao implements IServicesDao {
 	public void save(Services entity) {
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn.prepareStatement(
-						"INSERT INTO \"HiMTA::ExtraInfo.Services\"(\"servid\", \"microid\", \"address\") VALUES (?, ?, ?)")) {
+						"INSERT INTO "+ SERVICES_TABLE +"(\"servid\", \"microid\", \"address\") VALUES (?, ?, ?)")) {
 			stmnt.setString(1, entity.getServid());
 			stmnt.setString(2, entity.getMicroid());
 			stmnt.setString(3, entity.getAddress());
@@ -86,7 +88,7 @@ public class ServicesDao implements IServicesDao {
 	@Override
 	public void delete(String id) {
 		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmnt = conn.prepareStatement("DELETE FROM \"HiMTA::ExtraInfo.Services\" WHERE \"servid\" = ?")) {
+				PreparedStatement stmnt = conn.prepareStatement("DELETE FROM "+ SERVICES_TABLE +" WHERE \"servid\" = ?")) {
 			stmnt.setString(1, id);
 			stmnt.execute();
 		} catch (SQLException e) {
@@ -98,7 +100,7 @@ public class ServicesDao implements IServicesDao {
 	public void update(Services entity) {
 		try (Connection conn = dataSource.getConnection();
 				PreparedStatement stmnt = conn.prepareStatement(
-						"UPDATE \"HiMTA::ExtraInfo.Services\" SET \"name\" = ?, \"surname\" = ?, \"age\" = ? WHERE \"servid\" = ?")) {
+						"UPDATE "+ SERVICES_TABLE +" SET \"name\" = ?, \"surname\" = ?, \"age\" = ? WHERE \"servid\" = ?")) {
 			stmnt.setString(1, entity.getServid());
 			stmnt.setString(2, entity.getMicroid());
 			stmnt.setString(3, entity.getAddress());

@@ -32,6 +32,9 @@
             "name": "manifest.json"
         },
         {
+            "name": "model\\config.json"
+        },
+        {
             "name": "model\\microwaveModel.json"
         },
         {
@@ -55,10 +58,16 @@
             "name": "tmp\\manifest.json"
         },
         {
+            "name": "tmp\\model\\config.json"
+        },
+        {
             "name": "tmp\\model\\microwaveModel.json"
         },
         {
             "name": "tmp\\view\\App.view.xml"
+        },
+        {
+            "name": "tmp\\view\\Dialog.fragment.xml"
         },
         {
             "name": "tmp-dbg\\Component.js"
@@ -68,6 +77,9 @@
         },
         {
             "name": "view\\App.view.xml"
+        },
+        {
+            "name": "view\\Dialog.fragment.xml"
         },
         {
             "name": "xs-app.json"

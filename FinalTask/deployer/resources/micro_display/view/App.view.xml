@@ -4,33 +4,25 @@
             <Page title="{i18n>homePageTitle}">
                 <Panel class="sapUiResponsiveMargin" width="auto">
                     <content>
-                        <Table id="microTable" growing="true" growingThreshold="5" items="{path: 'microwaves>/Microwaves'}"
-                            mode="SingleSelectMaster" selectionChange="selectFridge" >
+                        <Table id="microTable" items="{path: 'microwaves>/Microwaves'}" mode="SingleSelectMaster"
+                            selectionChange="selectFridge">
                             <headerToolbar>
-                                <OverflowToolbar>
-                                    <content>
-                                        <Text text="Enabled" />
-                                        <CheckBox selected="false" select="checkDone" enabled="true" />
-                                        <Label text="Brand" class="sapUiSmallMargin" />
-                                        <Input id="input_brand" placeholder="{i18n>Placeholder}" width="auto" enabled="false" value="{microModel>/brand}"/>
-                                        <Label text="Color" class="sapUiSmallMargin" />
-                                        <Input id="input_color" placeholder="{i18n>Placeholder}" width="auto" enabled="false" />
-                                        <Button text="{i18n>serviceButton}" width="auto" press="onDialogPress" class="sapUiSmallMarginBottom" />
-                                    </content>
-                                </OverflowToolbar>
+                                <Toolbar>
+                                    <Title text="Main information" />
+                                    <ToolbarSpacer />
+                                    <SearchField id="searchField" width="auto" placeholder="{i18n>searchField}" search=".onSearch" />
+                                    <Button icon="sap-icon://create" press="onDialogPress" />
+                                </Toolbar>
                             </headerToolbar>
                             <columns>
                                 <Column id="idColumn">
-                                    <Text text="{i18n>idNameLabelText}" />
+                                    <Text text="{i18n>idLabelText}" />
                                 </Column>
                                 <Column id="brandColumn">
                                     <Text text="{i18n>brandLabelText}" />
                                 </Column>
                                 <Column id="colorColumn">
                                     <Text text="{i18n>colorLabelText}" />
-                                </Column>
-                                <Column id="serviceColumn">
-                                    <Text text="{i18n>serviceLabelText}" />
                                 </Column>
                             </columns>
                             <items>
@@ -44,9 +36,6 @@
                                     <cells>
                                         <Text text="{microwaves>color}" />
                                     </cells>
-                                    <cells>
-                                    	<Button text="{i18n>serviceButton}" width="auto" press="onDialogPress" class="sapUiSmallMarginBottom" />
-                                    </cells>
                                 </ColumnListItem>
                             </items>
                         </Table>
@@ -54,18 +43,22 @@
                 </Panel>
                 <Panel id="productDetailsPanel" headerText="{i18n>addInfoHeader}" class="sapUiResponsiveMargin" width="auto">
                     <l:VerticalLayout>
-                        <Label text="{i18n>Created}:" />
+                    <l:HorizontalLayout>
+                        <Label text="{i18n>Created} :" />
                         <Text id="dateCreate" />
-                        <Label text="{i18n>Updated}:" />
+                        </l:HorizontalLayout>
+                        <l:HorizontalLayout>
+                        <Label text="{i18n>Updated} :" />
                         <Text id="dateUpdate" />
+                        </l:HorizontalLayout>
                     </l:VerticalLayout>
                 </Panel>
                 <footer>
                     <Toolbar>
                         <ToolbarSpacer />
-                        <Button id="createButton" text="Create" icon="sap-icon://add" press=".createMicrowave" enabled="false" />
-                        <Button id="updateButton" text="Edit" icon="sap-icon://edit" press=".updateMicrowave" enabled="false" />
-                        <Button id="deleteButton" text="Delete" icon="sap-icon://delete" press=".deleteMicrowave" />
+                        <Button text="{i18n>createButton}" icon="sap-icon://add" press=".createMicrowave" />
+                        <Button text="{i18n>editButton}" icon="sap-icon://edit" press=".updateMicrowave" enabled="{configModel>/bool}" />
+                        <Button text="{i18n>createButton}" icon="sap-icon://delete" press=".deleteMicrowave" enabled="{configModel>/bool}" />
                     </Toolbar>
                 </footer>
             </Page>

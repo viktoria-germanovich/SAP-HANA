@@ -1,11 +1,15 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/m/MessageToast",
-], function (Controller, MessageToast) {
+	"sap/ui/core/Fragment",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"sap/ui/model/FilterType"
+], function (Controller, MessageToast, Fragment, Filter, FilterOperator, FilterType) {
 	"use strict";
 
 	return Controller.extend("micro_display.controller.App", {
-		
+
 		onInit: function () {
 			this.oTable = this.getView().byId("microTable");
 			this.mModel = this.getView().getModel("microModel");
@@ -13,9 +17,9 @@ sap.ui.define([
 		},
 
 		createMicrowave: function () {
-			var Brand = this.mModel.getProperty("/brand");
-			var Color = this.mModel.getProperty("/color");
-			if (Brand === "" || Color === "") {
+			var Brand = this.mModel.getProperty("/brand"),
+				Color = this.mModel.getProperty("/color");
+			if (!Brand || !Color) {
 				MessageToast.show("Type in a brand and a color!");
 			} else {
 
@@ -33,19 +37,20 @@ sap.ui.define([
 				});
 			}
 		},
-		
+
 		updateMicrowave: function () {
-			
-			var oSelectedItem =this.oTable.getSelectedItem();
-			var index = this.oTable.indexOfItem(oSelectedItem);
-			if (index === -1) {
+			var Brand = this.mModel.getProperty("/brand"),
+				Color = this.mModel.getProperty("/color"),
+				oSelectedItem = this.oTable.getSelectedItem();
+			if (!oSelectedItem) {
 				MessageToast.show("Row is not selected!");
+			} else if (!Brand || !Color) {
+				MessageToast.show("Type in a brand and a color!");
 			} else {
-				var microid = oSelectedItem.getBindingContext("microwaves").getProperty("microid");
+				var microid = oSelectedItem.getBindingContext("microwaves").getProperty("microid"),
+					obj = this.mModel.getData(),
+					oDataModel = this.getView().getModel("microwaves");
 
-				var obj = this.mModel.getData();
-
-				var oDataModel = this.getView().getModel("microwaves");
 				oDataModel.update("/Microwaves('" + microid + "')", obj, {
 					merge: false,
 					success: function () {
@@ -56,12 +61,11 @@ sap.ui.define([
 					}
 				});
 			}
+
 		},
 		deleteMicrowave: function () {
 			var oSelectedItem = this.oTable.getSelectedItem();
-			var index = this.oTable.indexOfItem(oSelectedItem);
-
-			if (index === -1) {
+			if (!oSelectedItem) {
 				MessageToast.show("Row is not selected!");
 			} else {
 				var microid = this.oTable.getSelectedItem().getBindingContext("microwaves").getObject().microid;
@@ -82,45 +86,42 @@ sap.ui.define([
 			}
 		},
 
-		checkDone: function (oEvent) {
-			var check = oEvent.getParameter("selected");
-			this.cModel.setProperty("/bool",check);
-		},
-
-		selectFridge: function () {
-			var selItem = this.oTable.getSelectedItem();
-			var obj = selItem.getBindingContext("microwaves").getObject();
+		selectFridge: function (oEvent) {
+			var selItem = this.oTable.getSelectedItem(),
+				obj = selItem.getBindingContext("microwaves").getObject(),
+				check = oEvent.getParameter("selected");
 			this.byId("dateCreate").setText(obj.ts_create);
 			this.byId("dateUpdate").setText(obj.ts_update);
-			//   },
+			this.cModel.setProperty("/bool", check);
+		},
 
-			//   onDialogPress: function () {
-			// 	if (!this.pressDialog) {
-			// 		this.pressDialog = new Dialog({
-			// 			title: 'Serivices',
-			// 			content: new List({
-			// 				items: {
-			// 					path: '/ProductCollection',
-			// 					template: new StandardListItem({
-			// 						title: "{Name}",
-			// 						counter: "{Quantity}"
-			// 					})
-			// 				}
-			// 			}),
-			// 			beginButton: new Button({
-			// 				text: 'Close',
-			// 				press: function () {
-			// 					this.pressDialog.close();
-			// 				}.bind(this)
-			// 			})
-			// 		});
+		onDialogPress: function () {
+			var oView = this.getView();
 
-			// 		//to get access to the global model
-			// 		this.getView().addDependent(this.pressDialog);
-			// 	}
+			if (!this.byId("Dialog")) {
+				Fragment.load({
+					id: oView.getId(),
+					name: "micro_display.view.Dialog",
+					controller: this
+				}).then(function (oDialog) {
+					oView.addDependent(oDialog);
+					oDialog.open();
+				});
+			} else {
+				this.byId("Dialog").open();
+			}
 
-			// 	this.pressDialog.open();
-			// }
+		},
+		onCloseDialog: function () {
+			this.getView().byId("Dialog").close();
+		},
+
+		onSearch: function () {
+			var oView = this.getView(),
+				sValue = oView.byId("searchField").getValue(),
+				oFilter = new Filter("brand", FilterOperator.Contains, sValue);
+
+			oView.byId("microTable").getBinding("items").filter(oFilter, FilterType.Application);
 		}
 	});
 });
